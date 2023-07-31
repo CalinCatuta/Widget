@@ -3,18 +3,17 @@ class Widget{
         this._moneyNeded = 365
         this._donations = []
         this._displayMoneyNeded()
-        // this._displayMoney()
+        this._displayCaloriesProgress()
+      
     }
 
     addDonation(donatie){
         this._donations.push(donatie)
         this._displayMoneyNeded()
+        this._displayCaloriesProgress()
 
     }
-    // _displayMoney(){
-    //     const moneyNededEl = document.querySelector('.neded')
-    //     moneyNededEl.innerHTML = this._moneyNeded
-    // }
+
     _displayMoneyNeded(){
         const moneyNededEl = document.querySelector('.neded')
         // reduce(total va fi 0 la prima rulare setat de noi  si se va aduna cu meal.calories.)
@@ -25,8 +24,16 @@ class Widget{
             btn.disabled = true
             moneyNededEl.innerHTML = 'The found is completed'
         }else{
-            moneyNededEl.innerHTML = moneyNeded
+            moneyNededEl.innerHTML = '$' + moneyNeded
         }
+    }
+    _displayCaloriesProgress(){
+        const progresEl = document.querySelector("#calorie-progress")
+        const totalMoney = this._donations.reduce((total,donatie) => total + donatie.money, 0)
+        
+        const percentage = (totalMoney / this._moneyNeded) * 30
+        const width = Math.min(percentage, 30)
+        progresEl.style.width = `${70 + width}% `
     }
 }
 
@@ -63,3 +70,4 @@ class App{
 }
 
 const app = new App()
+
