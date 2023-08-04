@@ -1,7 +1,7 @@
 class Widget{
     constructor(){
-        this._moneyNeded = 365
-        this._donations = []
+        this._moneyNeded = Storage.getMoneyNeded()
+        this._donations = Storage.getDonations()
         this._displayMoneyNeded()
         this._displayCaloriesProgress()
       
@@ -9,6 +9,7 @@ class Widget{
 
     addDonation(donatie){
         this._donations.push(donatie)
+        Storage.saveDonation(donatie)
         this._displayMoneyNeded()
         this._displayCaloriesProgress()
 
@@ -41,6 +42,37 @@ class Donate{
     constructor(money){
         this.id = Math.random().toString(16).slice(2)
         this.money = money
+    }
+}
+
+class Storage{
+    static getMoneyNeded(defaulte = 365){
+        let moneyNeded
+        if(localStorage.getItem('moneyNeded') === null){
+            moneyNeded = defaulte
+        }else{
+            moneyNeded = +localStorage.getItem('moneyNeded')
+        }
+        return moneyNeded
+    }
+
+    static setMoneyNeded(moneyNeded){
+        localStorage.setItem('moneyNeded', moneyNeded)
+    }
+
+    static getDonations(){
+        let donatii
+        if(localStorage.getItem('donatii') === null){
+            donatii = []
+        }else{
+            donatii = JSON.parse(localStorage.getItem('donatii'))
+        }
+        return donatii
+    }
+    static saveDonation(donatie){
+        const donatii = Storage.getDonations()
+        donatii.push(donatie)
+        localStorage.setItem('donatii', JSON.stringify(donatii))
     }
 }
 
